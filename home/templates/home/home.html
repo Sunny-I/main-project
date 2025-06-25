@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CodeBattle - Online Coding Platform</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #1e1e2f;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+
+    .hero {
+      padding: 3rem 2rem;
+      background-color: #282c34;
+      color: white;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .section {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      background-color: white;
+      margin-top: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .card {
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 0;
+    }
+
+    .card:last-child {
+      border-bottom: none;
+    }
+
+    footer {
+      background-color: #1e1e2f;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div><strong>CodeBattle</strong></div>
+    <nav>
+      <a href="">Home</a>
+      <a href="#">Contests</a>
+      <a href="#">Problems</a>
+      <a href="#">Leaderboard</a>
+      <a href="/auth/login">Login</a>
+      <a href="{% url 'register' %}"> Sign Up</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Welcome to CodeBattle</h1>
+    <p>Practice coding, compete in contests, and improve your programming skills!</p>
+  </section>
+
+  <section class="section">
+    <h2>Upcoming Contests</h2>
+    <div class="card">
+      <h3>CodeBattle Weekly #21</h3>
+      <p>Starts: June 20, 2025 - 7:00 PM IST</p>
+    </div>
+    <div class="card">
+      <h3>CodeMarathon Challenge</h3>
+      <p>Starts: June 25, 2025 - 5:00 PM IST</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Popular Problems</h2>
+    <div class="card">
+      <strong>Two Sum</strong> — Easy  
+    </div>
+    <div class="card">
+      <strong>Binary Search Tree Paths</strong> — Medium  
+    </div>
+    <div class="card">
+      <strong>Knapsack Problem</strong> — Hard  
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 CodeBattle. All rights reserved.
+  </footer>
+
+</body>
+</html>
