@@ -1,31 +1,15 @@
+<!-- templates/home/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Home - CodeBattle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CodeBattle - Online Coding Platform</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    header {
-      background-color: #1e1e2f;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
     .hero {
       padding: 3rem 2rem;
       background-color: #282c34;
@@ -38,81 +22,90 @@
       margin-bottom: 1rem;
     }
 
-    .section {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-      background-color: white;
-      margin-top: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
     .card {
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 0;
-    }
-
-    .card:last-child {
-      border-bottom: none;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     footer {
-      background-color: #1e1e2f;
-      color: white;
-      text-align: center;
-      padding: 1rem;
       margin-top: 2rem;
+      padding: 1rem;
+      text-align: center;
+      background: #1e1e2f;
+      color: white;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div><strong>CodeBattle</strong></div>
-    <nav>
-      <a href="">Home</a>
-      <a href="#">Contests</a>
-      <a href="#">Problems</a>
-      <a href="#">Leaderboard</a>
-      <a href="/auth/login">Login</a>
-      <a href="{% url 'register' %}"> Sign Up</a>
-    </nav>
-  </header>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">CodeBattle</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Contests</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'problems_list' %}">Problems</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link disabled">Hi, {{ user.username }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
   <section class="hero">
     <h1>Welcome to CodeBattle</h1>
     <p>Practice coding, compete in contests, and improve your programming skills!</p>
   </section>
 
-  <section class="section">
+  <!-- Main Content -->
+  <div class="container my-4">
     <h2>Upcoming Contests</h2>
     <div class="card">
-      <h3>CodeBattle Weekly #21</h3>
+      <h4>CodeBattle Weekly #21</h4>
       <p>Starts: June 20, 2025 - 7:00 PM IST</p>
     </div>
     <div class="card">
-      <h3>CodeMarathon Challenge</h3>
+      <h4>CodeMarathon Challenge</h4>
       <p>Starts: June 25, 2025 - 5:00 PM IST</p>
     </div>
-  </section>
+  </div>
 
-  <section class="section">
+  <div class="container">
     <h2>Popular Problems</h2>
     <div class="card">
-      <strong>Two Sum</strong> — Easy  
+      <strong>Two Sum</strong> — <span class="text-success">Easy</span>
     </div>
     <div class="card">
-      <strong>Binary Search Tree Paths</strong> — Medium  
+      <strong>Binary Search Tree Paths</strong> — <span class="text-warning">Medium</span>
     </div>
     <div class="card">
-      <strong>Knapsack Problem</strong> — Hard  
+      <strong>Knapsack Problem</strong> — <span class="text-danger">Hard</span>
     </div>
-  </section>
+  </div>
 
+  <!-- Footer -->
   <footer>
     &copy; 2025 CodeBattle. All rights reserved.
   </footer>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
