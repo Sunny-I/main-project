@@ -1,111 +1,688 @@
-<!-- templates/home/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home - CodeBattle</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Bootstrap CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuminaCode | Minimalist Coding Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
   <style>
-    .hero {
-      padding: 3rem 2rem;
-      background-color: #282c34;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --sky-start: #e0f7ff;
+      --sky-end: #f0fdff;
+      --primary: #5e81f4;
+      --primary-light: rgba(94, 129, 244, 0.1);
+      --secondary: #8fbcff;
+      --accent: #ff7eb3;
+      --text: #2a3a5e;
+      --light-text: #5e7c9a;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--sky-start), var(--sky-end));
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating background shapes */
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      filter: blur(30px);
+    }
+
+    .shape-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      top: -100px;
+      left: -100px;
+      animation: float 25s infinite ease-in-out;
+    }
+
+    .shape-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent);
+      bottom: -100px;
+      right: 10%;
+      animation: float 30s infinite ease-in-out 2s;
+    }
+
+    .shape-3 {
+      width: 200px;
+      height: 200px;
+      background: var(--secondary);
+      top: 30%;
+      right: -50px;
+      animation: float 20s infinite ease-in-out 4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-20px, -30px); }
+      50% { transform: translate(10px, 20px); }
+      75% { transform: translate(30px, -10px); }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background: var(--card-bg);
+      border-radius: 0 0 15px 15px;
+      padding: 0.8rem 1.5rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+
+    .navbar:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .logo-circle {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    .navbar-toggler {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(42, 58, 94, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .nav-item {
+      margin: 0 0.3rem;
+    }
+
+    .nav-link {
+      color: var(--light-text) !important;
+      font-weight: 500;
+      padding: 0.7rem 1.2rem !important;
+      border-radius: 50px;
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary) !important;
+      background: var(--primary-light);
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::before {
+      width: 60%;
+    }
+
+    .dropdown-menu {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 0.8rem;
+      min-width: 200px;
+      backdrop-filter: blur(10px);
+      margin-top: 10px;
+    }
+
+    .dropdown-item {
+      color: var(--light-text);
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dropdown-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .dropdown-divider {
+      border-color: rgba(94, 124, 244, 0.15);
+      margin: 0.5rem 0;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.8rem;
+      margin-left: 1rem;
+    }
+
+    .btn-nav {
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-login:hover {
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-signup {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+    }
+
+    .btn-signup:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(94, 129, 244, 0.3);
+    }
+
+    @media (max-width: 992px) {
+      .navbar-collapse {
+        padding: 1rem;
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-top: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-buttons {
+        margin-left: 0;
+        margin-top: 1rem;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .btn-nav {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 0 5%;
       text-align: center;
+      position: relative;
     }
 
     .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--text), var(--primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      color: var(--light-text);
+      line-height: 1.6;
+      animation: fadeIn 1.8s ease-out;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 10px 25px rgba(94, 129, 244, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(94, 129, 244, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(94, 129, 244, 0.1);
+      transform: translateY(-5px);
+    }
+
+    /* Features */
+    .features {
+      max-width: 1400px;
+      margin: 8rem auto;
+      padding: 0 5%;
+    }
+
+    .section-title {
+      text-align: center;
       font-size: 2.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 5rem;
+      color: var(--text);
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
     }
 
     .card {
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
-    footer {
-      margin-top: 2rem;
-      padding: 1rem;
-      text-align: center;
-      background: #1e1e2f;
+    .card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
       color: white;
+      font-size: 2rem;
+    }
+
+    .card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .card p {
+      color: var(--light-text);
+      line-height: 1.7;
+    }
+
+    /* Floating animation for cards */
+    .card:nth-child(1) { animation: floatCard 8s infinite ease-in-out; }
+    .card:nth-child(2) { animation: floatCard 8s infinite ease-in-out 1s; }
+    .card:nth-child(3) { animation: floatCard 8s infinite ease-in-out 2s; }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Stats */
+    .stats {
+      max-width: 1000px;
+      margin: 8rem auto;
+      padding: 4rem;
+      background: var(--card-bg);
+      border-radius: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--light-text);
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 5%;
+      text-align: center;
+      color: var(--light-text);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--light-text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(94, 129, 244, 0.1);
+      color: var(--primary);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Floating background shapes -->
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  
+  {% include "home/navbar.html" %}
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">CodeBattle</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Contests</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'problems_list' %}">Problems</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
-
-          {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link disabled">Hi, {{ user.username }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-          {% else %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Sign Up</a></li>
-          {% endif %}
-        </ul>
+  
+  <section class="hero">
+    <h1>Code with Clarity, Create with Joy</h1>
+    <p>A minimalist space where programming becomes a peaceful, focused experience. Solve challenges, grow skills, and find your flow.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-primary">
+        <i class="fas fa-play"></i> Start Journey
+      </a>
+      <a href="#" class="btn btn-secondary">
+        <i class="fas fa-book-open"></i> Learn More
+      </a>
+    </div>
+  </section>
+  
+  <section class="features">
+    <h2 class="section-title">Our Philosophy</h2>
+    
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <h3>Mindful Coding</h3>
+        <p>Focus on the essence of problem-solving without distractions. Our interface clears the noise so you can think deeply.</p>
+      </div>
+      
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-leaf"></i>
+        </div>
+        <h3>Growth Ecosystem</h3>
+        <p>Nurture your skills in a supportive environment designed for sustainable learning and progress at your own pace.</p>
+      </div>
+      
+      <div class="card">
+        <div class="card-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h3>Joyful Creation</h3>
+        <p>Rediscover the delight of programming through challenges that inspire rather than frustrate.</p>
       </div>
     </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Welcome to CodeBattle</h1>
-    <p>Practice coding, compete in contests, and improve your programming skills!</p>
   </section>
-
-  <!-- Main Content -->
-  <div class="container my-4">
-    <h2>Upcoming Contests</h2>
-    <div class="card">
-      <h4>CodeBattle Weekly #21</h4>
-      <p>Starts: June 20, 2025 - 7:00 PM IST</p>
+  
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">12,589</div>
+      <div class="stat-label">Mindful Coders</div>
     </div>
-    <div class="card">
-      <h4>CodeMarathon Challenge</h4>
-      <p>Starts: June 25, 2025 - 5:00 PM IST</p>
+    
+    <div class="stat">
+      <div class="stat-number">427</div>
+      <div class="stat-label">Serene Challenges</div>
     </div>
-  </div>
-
-  <div class="container">
-    <h2>Popular Problems</h2>
-    <div class="card">
-      <strong>Two Sum</strong> — <span class="text-success">Easy</span>
+    
+    <div class="stat">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Positive Experiences</div>
     </div>
-    <div class="card">
-      <strong>Binary Search Tree Paths</strong> — <span class="text-warning">Medium</span>
-    </div>
-    <div class="card">
-      <strong>Knapsack Problem</strong> — <span class="text-danger">Hard</span>
+    
+    <div class="stat">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Peaceful Environment</div>
     </div>
   </div>
+  
 
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 CodeBattle. All rights reserved.
-  </footer>
-
-  <!-- Bootstrap JS -->
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Add subtle interactive animations
+    document.addEventListener('DOMContentLoaded', () => {
+      // Floating card effect on mouse move
+      document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const angleY = (x - centerX) / 25;
+          const angleX = (centerY - y) / 25;
+          
+          card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-15px)`;
+        });
+      });
+      
+      // Reset card position when mouse leaves
+      document.addEventListener('mouseleave', () => {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+          card.style.transform = 'translateY(-15px)';
+        });
+      });
+      
+      // Navbar animation on scroll
+      const navbar = document.querySelector('.navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.style.borderRadius = "15px";
+          navbar.style.margin = "10px";
+          navbar.style.width = "calc(100% - 20px)";
+        } else {
+          navbar.style.borderRadius = "0 0 15px 15px";
+          navbar.style.margin = "0";
+          navbar.style.width = "100%";
+        }
+      });
+    });
+  </script>
 </body>
 </html>

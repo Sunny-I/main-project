@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'home',
-    'problems',
-    'submission',
+    'compiler'
 ]
 
 MIDDLEWARE = [
@@ -119,7 +118,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Create the directory if it doesn't exist
+static_dir = os.path.join(BASE_DIR, 'static')
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir)
 
 STATICFILES_DIRS= [
     os.path.join(BASE_DIR,'static')

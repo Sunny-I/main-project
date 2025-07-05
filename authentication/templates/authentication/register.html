@@ -1,79 +1,448 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --sky-start: #e0f7ff;
+            --sky-end: #f0fdff;
+            --primary: #5e81f4;
+            --primary-light: rgba(94, 129, 244, 0.1);
+            --secondary: #8fbcff;
+            --accent: #ff7eb3;
+            --text: #2a3a5e;
+            --light-text: #5e7c9a;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s ease;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
-            background: linear-gradient(to right, #dbeafe, #f0f9ff);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--sky-start), var(--sky-end));
+            color: var(--text);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Floating background shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            filter: blur(30px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            left: -100px;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            bottom: -100px;
+            right: 10%;
+            animation: float 30s infinite ease-in-out 2s;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            top: 30%;
+            right: -50px;
+            animation: float 20s infinite ease-in-out 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-20px, -30px); }
+            50% { transform: translate(10px, 20px); }
+            75% { transform: translate(30px, -10px); }
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 480px;
+            padding: 45px 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e6e9f0;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #4361ee;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 42px;
+            color: #4361ee;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2a3a5e;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2a3a5e;
+            font-size: 15px;
+            padding-left: 5px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px 18px 16px 50px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8f9fc;
+        }
+        
+        input:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            background: #fff;
+        }
+        
+        .input-container i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 18px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            background: #4361ee;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.25);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(67, 97, 238, 0.35);
+            background: #3550d4;
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        .sign-in {
+            text-align: center;
+            margin-top: 28px;
+            color: #5e7c9a;
+            font-size: 16px;
+        }
+        
+        .sign-in a {
+            color: #4361ee;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .sign-in a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #4361ee;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s;
+        }
+        
+        .sign-in a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .password-rules {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+            padding-left: 10px;
+        }
+        
+        .password-rules ul {
+            margin-top: 6px;
+            padding-left: 22px;
+        }
+        
+        .password-rules li {
+            margin-bottom: 4px;
+            position: relative;
+        }
+        
+        .password-rules li::before {
+            content: '•';
+            position: absolute;
+            left: -12px;
+            color: #4361ee;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e1e5ee;
+        }
+        
+        .divider::before {
+            margin-right: 15px;
+        }
+        
+        .divider::after {
+            margin-left: 15px;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #fff;
+            border: 1px solid #e1e5ee;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 20px;
+            color: #555;
         }
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .form-label {
-            font-weight: 600;
+        
+        .social-btn.google:hover {
+            background: #f1f1f1;
+            color: #dd4b39;
         }
-        .btn-register {
-            background-color: #198754;
-            color: white;
+        
+        .social-btn.facebook:hover {
+            background: #f1f1f1;
+            color: #3b5998;
         }
-        .btn-register:hover {
-            background-color: #157347;
+        
+        .social-btn.twitter:hover {
+            background: #f1f1f1;
+            color: #1da1f2;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 520px) {
+            .container {
+                padding: 35px 25px;
+                max-width: 90%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            input {
+                padding: 14px 16px 14px 45px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Floating background shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5">
-                <div class="card p-4">
-                    <h3 class="text-center mb-4">Create Account</h3>
-
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-
-                    <form method="POST" novalidate>
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <div class="form-text text-muted small">{{ field.help_text }}</div>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-
-                        <button type="submit" class="btn btn-register w-100">Register</button>
-                    </form>
-
-                    <p class="text-center mt-3 mb-0">
-                        Already have an account? <a href="{% url 'login' %}">Login</a>
-                    </p>
+        <div class="logo">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <h1>Create Your Account</h1>
+        
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-container">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Enter your username">
                 </div>
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-container">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Create a password">
+                </div>
+                <div class="password-rules">
+                    <p>Your password must contain:</p>
+                    <ul>
+                        <li>At least 8 characters</li>
+                        <li>One uppercase letter</li>
+                        <li>One number</li>
+                        <li>One special character</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">Password confirmation</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password">
+                </div>
+            </div>
+            
+            <button type="submit">Create Account</button>
+            <div class="sign-in">
+                Already have an account? <a href="{% url 'login' %}">Sign in</a>
+            </div>
+        </form>
     </div>
 
-    <!-- Bootstrap JS (for alert dismissible) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            
+            // Form validation logic
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            
+            if(!username || !email || !password) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Password strength validation
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if(!passwordRegex.test(password)) {
+                alert('Password must contain at least 8 characters, one uppercase letter, one number and one special character');
+                return;
+            }
+            
+            // In a real application, you would submit the form to a server here
+            alert('Account created successfully! Welcome, ' + username + '!');
+        });
+        
+        // Add animation to input focus
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('i').style.color = '#4361ee';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('i').style.color = '#777';
+            });
+        });
+    </script>
 </body>
 </html>

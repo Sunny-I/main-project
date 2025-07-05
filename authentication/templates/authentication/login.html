@@ -3,75 +3,389 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | LuminaCode</title>
     <!-- Bootstrap CSS for styling -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --sky-start: #e0f7ff;
+            --sky-end: #f0fdff;
+            --primary: #5e81f4;
+            --primary-light: rgba(94, 129, 244, 0.1);
+            --secondary: #8fbcff;
+            --accent: #ff7eb3;
+            --text: #2a3a5e;
+            --light-text: #5e7c9a;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--sky-start), var(--sky-end));
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        /* Floating background shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            filter: blur(30px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            left: -100px;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            bottom: -100px;
+            right: 10%;
+            animation: float 30s infinite ease-in-out 2s;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            top: 30%;
+            right: -50px;
+            animation: float 20s infinite ease-in-out 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-20px, -30px); }
+            50% { transform: translate(10px, 20px); }
+            75% { transform: translate(30px, -10px); }
+        }
+
         .login-container {
-            margin-top: 100px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 480px;
+            padding: 45px 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e6e9f0;
         }
+
         .login-box {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: var(--transition);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box:hover {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        h2 {
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 500;
+            padding-left: 12px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(94, 129, 244, 0.2);
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(94, 129, 244, 0.2);
+            background: white;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 42px;
+            color: var(--light-text);
+            font-size: 1.1rem;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(94, 129, 244, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(94, 129, 244, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .register-link {
+            margin-top: 25px;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .register-link a:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .register-link a:hover {
+            color: var(--text);
+        }
+
+        .register-link a:hover:after {
+            width: 100%;
+        }
+
+        /* Messages styling */
+        .messages {
+            margin-bottom: 25px;
+        }
+
+        .alert {
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            border: none;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Footer */
+        .login-footer {
+            margin-top: 30px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .login-container {
+                padding: 15px;
+            }
+            
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container login-container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 login-box">
-                <h2 class="text-center mb-4">Login</h2>
+    <!-- Floating background shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
 
-                <!-- Display messages (e.g., invalid login) -->
-                {% if messages %}
-                    <div class="alert alert-danger">
+    <div class="login-container">
+            
+        <h2 style="text-align: center;">Welcome Back</h2>
+
+            
+            <!-- Display messages (e.g., invalid login) -->
+            {% if messages %}
+                <div class="messages">
+                    <div class="alert">
                         {% for message in messages %}
-                            <p>{{ message }}</p>
+                            <p><i class="fas fa-exclamation-circle me-2"></i>{{ message }}</p>
                         {% endfor %}
                     </div>
-                {% endif %}
+                </div>
+            {% endif %}
 
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input 
-                            type="text" 
-                            name="username" 
-                            id="username" 
-                            class="form-control" 
-                            placeholder="Enter your username" 
-                            required
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input 
-                            type="password" 
-                            name="password" 
-                            id="password" 
-                            class="form-control" 
-                            placeholder="Enter your password" 
-                            required
-                        >
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        class="form-control" 
+                        placeholder="Enter your username" 
+                        required
+                    >
+                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        class="form-control" 
+                        placeholder="Enter your password" 
+                        required
+                    >
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
 
-                <p class="text-center mt-3">
-                    Don't have an account? <a href="{% url 'register' %}">Register</a>
-                </p>
-            </div>
+            <p class="register-link" style="text-align: center;">
+                Don't have an account? <a href="{% url 'register' %}">Create one</a>
+            </p>            
+            
         </div>
     </div>
 
     <!-- Optional JS for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add subtle interactive effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add focus effect to form inputs
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add animation to login button
+            const loginBtn = document.querySelector('.btn-login');
+            loginBtn.addEventListener('mouseenter', () => {
+                loginBtn.style.transform = 'translateY(-3px)';
+            });
+            
+            loginBtn.addEventListener('mouseleave', () => {
+                loginBtn.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
 </body>
 </html>
