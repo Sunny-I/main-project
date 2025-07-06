@@ -24,7 +24,10 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')), # Using Django's built-in auth URLs for login/logout/password management
     path('', include('home.urls')),
     path('authentication/',include('authentication.urls')),
-    path('compiler/', include('compiler.urls')),
+    path('compiler/', include(('compiler.urls', 'compiler'), namespace='compiler')),
+    path('problem_list/', include('problem_list.urls')),
+    path('submission', include('submissions.urls')),
+
 ]
 
 if settings.DEBUG:

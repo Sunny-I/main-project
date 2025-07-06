@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0f7ff, #f0fdff);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2a3a5e;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+        
+        .header-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            border: 1px solid #e6e9f0;
+        }
+        
+        .header-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #4361ee;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        h1 {
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2a3a5e;
+        }
+        
+        .subtitle {
+            color: #5e7c9a;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .search-container input {
+            flex: 1;
+            min-width: 1100px;
+            padding: 14px 20px;
+            border: 2px solid #e1e5ee;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f8f9fc;
+            transition: all 0.3s;
+        }
+        
+        .search-container input:focus {
+            border-color: #4361ee;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            background: #fff;
+        }
+        
+        .filter-btn {
+            background: white;
+            border: 2px solid #4361ee;
+            color: #4361ee;
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #f8f9ff;
+        }
+        
+        .filter-btn i {
+            margin-right: 8px;
+        }
+        
+        .problem-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e6e9f0;
+        }
+        
+        .table-responsive {
+            border-radius: 16px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        thead {
+            background-color: #f8f9fc;
+        }
+        
+        thead th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #5e7c9a;
+            border-bottom: 2px solid #e6e9f0;
+        }
+        
+        tbody tr {
+            transition: all 0.2s;
+            border-bottom: 1px solid #e6e9f0;
+        }
+        
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9ff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.1);
+        }
+        
+        tbody td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e6e9f0;
+        }
+        
+        .problem-title {
+            color: #4361ee;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .problem-title:hover {
+            color: #3550d4;
+            text-decoration: underline;
+        }
+        
+        .badge {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-block;
+        }
+        
+        .badge-Easy { 
+            background-color:rgb(5, 179, 101); 
+            color:rgba(1, 150, 16, 0.92); 
+        }
+        
+        .badge-Medium { 
+            background-color:rgb(211, 162, 0); 
+            color:rgb(223, 168, 4); 
+        }
+        
+        .badge-Hard { 
+            background-color: #f8d7da; 
+            color: #842029; 
+        }
+        
+        .tags {
+            color: #5e7c9a;
+            font-size: 14px;
+        }
+        
+        .submissions {
+            font-weight: 600;
+            color: #2a3a5e;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            padding: 10px 18px;
+            background: white;
+            border: 1px solid #e1e5ee;
+            border-radius: 10px;
+            color: #2a3a5e;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        .page-btn.active {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            
+            thead {
+                display: none;
+            }
+            
+            tbody tr {
+                display: block;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            
+            tbody td {
+                display: block;
+                text-align: right;
+                padding: 12px 15px;
+                border-bottom: 1px solid #e6e9f0;
+            }
+            
+            tbody td::before {
+                content: attr(data-label);
+                float: left;
+                font-weight: 600;
+                color: #5e7c9a;
+            }
+            
+            .problem-card {
+                border-radius: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {%include "home/navbar.html" %}
+    <div class="container">
+        <div class="header-card">
+            <h1>Problem List</h1>
+            <p class="subtitle">Browse through our collection of coding challenges and improve your skills</p>
+            
+            <div class="search-container">
+                <form method="get">
+                    <input type="text" name="q" placeholder="Search problems..." value="{{ request.GET.q }}">
+                    <button class="filter-btn"><i class="fas fa-filter"></i> Filter</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="problem-card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.NO</th>
+                            <th>Title</th>
+                            <th>Difficulty</th>
+                            <th>Tags</th>
+                            <th>Submissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for problem in problems %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="{% url 'compiler:problem_detail' slug=problem.slug %}">{{ problem.title }}</a></td>
+                            <td><span class="badge badge-{{ problem.difficulty }} style = '' ">{{ problem.difficulty }}</span></td>
+                            <td>{{ problem.tags }}</td>
+                            <td>{{ problem.submissions }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No problems available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+    </div>
+    
+    <script>
+        // Add hover effect to table rows
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 6px 20px rgba(67, 97, 238, 0.15)';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+        
+        // Add active state to pagination buttons
+        const pageButtons = document.querySelectorAll('.page-btn');
+        pageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                pageButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        // Navbar scroll behavior
+        window.addEventListener('DOMContentLoaded', () => {
+          const navbar = document.querySelector('.navbar');
+          
+          // Add scroll behavior
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+              navbar.classList.add('scrolled');
+            } else {
+              navbar.classList.remove('scrolled');
+            }
+          });
+          
+          // Check if user is logged in (for demo purposes)
+          const isLoggedIn = false; // Change to true to see logged in state
+          
+          if (isLoggedIn) {
+            document.querySelector('.nav-buttons').style.display = 'none';
+            document.querySelector('.nav-item.dropdown').style.display = 'block';
+          } else {
+            document.querySelector('.nav-buttons').style.display = 'flex';
+            document.querySelector('.nav-item.dropdown').style.display = 'none';
+          }
+        });
+      </script>
+</body>
+</html>

@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'home',
-    'compiler'
+    'compiler',
+    'problem_list',
+    'submissions',
 ]
 
 MIDDLEWARE = [

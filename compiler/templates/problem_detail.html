@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ problem.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #1f2937;
+            --light-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --code-bg: #0d1117;
+            --code-border: #30363d;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 80px; /* Add this line - adjust px value based on navbar height */
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 2rem auto;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 1rem auto; /* Change from 2rem to 1rem at top */
+        }
+
+        .problem-header {
+            background: linear-gradient(135deg, var(--dark-bg), #374151);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .problem-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .problem-meta {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+          }
+
+        .difficulty-badge {
+            padding: 12px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .difficulty-Easy { 
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
+        }
+
+        .difficulty-Medium { 
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
+        }
+
+        .difficulty-Hard { 
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+          }
+          
+          .tags-container .btn {
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+          }
+          
+          .tags-container .btn:hover {
+            transform: translateY(-2px);
+          }
+
+        .tag {
+            background: rgba(99, 102, 241, 0.15);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .content-section {
+            padding: 2rem;
+        }
+
+        .problem-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .problem-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            color: var(--dark-bg);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-section {
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            position: sticky;
+            top: 2rem;
+            border: 1px solid #374151;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .code-textarea {
+            background: var(--code-bg);
+            color: #f0f6fc;
+            border: 2px solid var(--code-border);
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 200px;
+            tab-size: 4;
+        }
+
+        .code-textarea:focus {
+            border-color: var(--primary-color);
+            background: var(--code-bg);
+            color: #f0f6fc;
+            outline: none;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-run:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            color: white;
+        }
+
+        .btn-run:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .output-section {
+            background: var(--code-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--success-color);
+            border: 1px solid var(--code-border);
+        }
+
+        .output-title {
+            color: var(--success-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .output-content {
+            background: transparent;
+            color: #f0f6fc;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+
+        .code-block {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        .sample-io {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .sample-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .sample-box:hover {
+            border-color: var(--primary-color);
+        }
+
+        .sample-label {
+            font-weight: 600;
+            color: var(--dark-bg);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .loading-spinner {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .verdict-section {
+            margin-top: 1.5rem;
+        }
+
+        .verdict-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        .verdict-accepted {
+            border-left: 4px solid var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .verdict-failed {
+            border-left: 4px solid var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #059669);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .summary-verdict {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .summary-accepted {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .summary-failed {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .language-selector {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        .language-selector:focus {
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .language-selector option {
+            background: var(--dark-bg);
+            color: white;
+        }
+
+        /* NEW STYLES FOR SUBMISSION HISTORY */
+        .submission-history {
+            margin-top: 2rem;
+        }
+        
+        .submission-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+        
+        .submission-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .submission-status {
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        
+        .status-accepted {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-pending {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .status-failed {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        @media (max-width: 768px) {
+            .sample-io {
+                grid-template-columns: 1fr;
+            }
+            
+            .problem-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .code-section {
+                position: static;
+            }
+
+            .content-section {
+                padding: 1rem;
+            }
+
+            .main-container {
+                margin: 1rem;
+            }
+        }
+        .btn-modern {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            min-width: 160px;
+            height: 56px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-modern:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover:before {
+            left: 100%;
+        }
+
+        .btn-modern:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-modern:active {
+            transform: translateY(1px);
+        }
+
+        /* Run Button - Green Theme */
+        .btn-run {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-run:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        /* Submit Button - Blue Theme */
+        .btn-submit {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        }
+
+        /* Icon Styling */
+        .btn-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-modern:hover .btn-icon {
+            transform: scale(1.1);
+        }
+
+        /* Loading State */
+        .btn-loading {
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn-loading .btn-icon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Ripple Effect */
+        .btn-modern::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-modern:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .btn-modern {
+                min-width: 100%;
+                padding: 18px 24px;
+            }
+        }
+        .verdict-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .verdict-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .verdict-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .verdict-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .verdict-accepted {
+            border-left-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .verdict-failed {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .verdict-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verdict-case {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .verdict-details {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .verdict-section {
+            background-color: #1e1e2f;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .verdict-item {
+            transition: all 0.3s ease;
+        }
+        .verdict-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+    </style>
+</head>
+<body>
+    {% include "home/navbar.html" %}
+
+    <div class="container-fluid px-3">
+        <div class="main-container">
+            <!-- Problem Header -->
+            <div class="problem-header">
+                <!-- FIXED: Use correct URL name for problem list -->
+                <a href="{% url 'problems_list' %}" class="btn-back mb-3">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Problems
+                </a>
+                
+                <h1 class="problem-title">{{ problem.title }}</h1>
+                
+                <div class="problem-meta">
+                    <!-- FIXED: Dynamic difficulty badge -->
+                    <span class="difficulty-badge difficulty-{{ problem.difficulty }}">
+                      <i class="fas fa-signal"></i> {{ problem.difficulty|upper }}
+                    </span>
+
+                    <a href="{% url 'my_submissions' %}" class="btn" style="border: 2px solid #1e6bff; color: #1e6bff;">
+                        MY SUBMISSIONS
+                    </a>
+                  
+                    <div class="tags-container">
+                        <!-- FIXED: Use correct URL name for user submissions -->
+                    </div>
+                  </div>
+            </div>
+
+            <div class="row g-0">
+                <!-- Left: Problem Description -->
+                <div class="col-lg-6">
+                    <div class="content-section">
+                        <div class="problem-section fade-in">
+                            <h3 class="section-title">
+                                <i class="fas fa-file-alt text-primary"></i>
+                                Description
+                            </h3>
+                            <div>{{ problem.description|safe }}</div>
+                        </div>
+                        
+                        <!-- Input Format Section -->
+                        {% if problem.sample_input %}
+                        <div class="problem-section fade-in">
+                            <h3 class="section-title">
+                                <i class="fas fa-arrow-right text-info"></i>
+                                Input Format
+                            </h3>
+                            <pre class="code-block">{{ problem.sample_input}}</pre>
+                        </div>
+                        {% endif %}
+
+                        <!-- Output Format Section -->
+                        {% if problem.sample_output %}
+                        <div class="problem-section fade-in">
+                            <h3 class="section-title">
+                                <i class="fas fa-arrow-left text-warning"></i>
+                                Output Format
+                            </h3>
+                            <pre class="code-block">{{ problem.sample_output }}</pre>
+                        </div>
+                        {% endif %}
+                        
+
+                         <!-- Constraints Section -->
+                         {% if problem.sample_output %}
+                        <div class="problem-section fade-in">
+                            <h3 class="section-title">
+                                <i class="fas fa-lightbulb text-info"></i>
+                                Constraints
+                            </h3>
+                            <pre class="code-block">{{ problem.constraints }}</pre>
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+
+                <!-- Right: Code Editor -->
+                <div class="col-lg-6">
+                    <div class="content-section">
+                        <div class="code-section">
+                            <h3 class="section-title text-white mb-3">
+                                <i class="fas fa-terminal"></i>
+                                Code Editor
+                            </h3>
+                            
+                            <!-- FIXED: Add action URL for form submission -->
+                            <form method="POST" id="codeForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="slug" value="{{ problem.slug }}">
+                                {{ form.as_p }}
+                            
+                                <!-- Summary Verdict 
+                                {% if summary_verdict %}
+                                <div class="summary-verdict {% if 'Accepted' in summary_verdict %}summary-accepted{% else %}summary-failed{% endif %}">
+                                    <i class="fas {% if 'Accepted' in summary_verdict %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+                                    {{ summary_verdict }}
+                                </div>
+                                {% endif %} -->
+                            
+                                <!-- Run Button -->
+                                <button type="submit" class="btn-modern btn-run" id="runBtn"
+                                    onclick="setFormAction('{% url 'compiler:run_code' %}')">
+                                    <span id="runText">Run Code</span>
+                                </button>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn-modern btn-submit" id="submitBtn"
+                                    onclick="setFormAction('{% url 'compiler:submit_code' %}')">
+                                    <i class="fas fa-paper-plane btn-icon" id="submitIcon"></i>
+                                    <span id="submitText">Submit</span>
+                                </button>
+                            </form>
+                            
+                            
+                            
+                            <!-- Progress Bar -->
+                            <div class="progress-bar" id="progressBar" style="display: none;">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+
+                            <!-- Test Case Results -->
+                            {% if verdicts %}
+                            <div class="verdict-section bg-dark p-4 rounded shadow-sm">
+                                <h5 class="text-white mb-3">
+                                    <i class="fas fa-clipboard-check me-2"></i> Test Case Results
+                                </h5>
+                            
+                                {% for case, result, output in verdicts %}
+                                    <div class="verdict-item d-flex justify-content-between align-items-center mb-2 p-2 rounded
+                                                {% if result == 'Accepted' %}bg-success bg-opacity-10 border-start border-success border-4
+                                                {% else %}bg-danger bg-opacity-10 border-start border-danger border-4{% endif %}">
+                                        <div>
+                                            <i class="fas {% if result == 'Accepted' %}fa-check-circle text-success{% else %}fa-times-circle text-danger{% endif %} me-2"></i>
+                                            <strong>{{ case }}</strong>
+                                            <br>
+                                            <small class="text-white-50">Output: <code>{{ output }}</code></small>
+                                        </div>
+                                        <span class="badge {% if result == 'Accepted' %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ result }}
+                                        </span>
+                                    </div>
+                                {% endfor %}
+                            
+                                <!-- Summary Text -->
+                                <div class="text-white-50 mt-2 text-end small">
+                                    {{ passed_count }}/{{ total_count }} test cases passed
+                                </div>
+                                
+                                <div class="mt-1 text-end fw-semibold text-white">
+                                    {% if passed_count == total_count %}
+                                        ✅ All test cases passed!
+                                    {% else %}
+                                        ❌ One or more test cases failed.
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            
+                        
+                                               
+                                           
+                       
+                        
+
+                            <!-- Output Section -->
+                            {% if output %}
+                            <div class="output-section fade-in">
+                                <div class="output-title">
+                                    <i class="fas fa-terminal"></i>
+                                    Output
+                                </div>
+                                <pre class="output-content">{{ output }}</pre>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+
+   
+    <script>
+
+            function setFormAction(actionUrl) {
+                document.getElementById("codeForm").action = actionUrl;
+            }
+
+        // Enhanced form submission with loading state
+        document.getElementById('codeForm').addEventListener('submit', function() {
+            const runBtn = document.getElementById('runBtn');
+            const runIcon = document.getElementById('runIcon');
+            const btnText = document.getElementById('btnText');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            
+            // Create loading spinner if it doesn't exist
+            if (!document.getElementById('loadingIcon')) {
+                const loadingIcon = document.createElement('i');
+                loadingIcon.id = 'loadingIcon';
+                loadingIcon.className = 'fas fa-spinner fa-spin';
+                loadingIcon.style.display = 'none';
+                runBtn.insertBefore(loadingIcon, btnText);
+            }
+            const loadingIcon = document.getElementById('loadingIcon');
+            
+            // Start loading state
+            runBtn.disabled = true;
+            runIcon.style.display = 'none';
+            loadingIcon.style.display = 'inline-block';
+            btnText.textContent = 'Running...';
+            progressBar.style.display = 'block';
+            
+            // Simulate progress animation
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+            }, 150);
+            
+            // Clean up on form submission
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+            }, 1000);
+        });
+
+        // Auto-resize textarea based on content
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => {
+            // Initial resize
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+            
+            // Resize on input
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        });
+
+        // Add staggered fade-in animation to sections
+        const sections = document.querySelectorAll('.problem-section');
+        sections.forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Tab support in code editor
+        const codeTextarea = document.querySelector('textarea[name="code"]');
+        if (codeTextarea) {
+            codeTextarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    
+                    this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 4;
+                }
+            });
+        }
+
+        // Add syntax highlighting class to code textarea
+        if (codeTextarea) {
+            codeTextarea.classList.add('code-textarea');
+        }
+
+        // Add class to test input textarea
+        const testInputTextarea = document.querySelector('textarea[name="stdin"]');
+        if (testInputTextarea) {
+            testInputTextarea.classList.add('code-textarea');
+        }
+
+        // Add class to language selector
+        const languageSelector = document.querySelector('select[name="language"]');
+        if (languageSelector) {
+            languageSelector.classList.add('language-selector');
+        }
+
+        // Smooth scroll to results after form submission
+        const form = document.getElementById('codeForm');
+        
+        // Add a small delay to allow Django to process and redirect
+        form.addEventListener('submit', function() {
+            setTimeout(() => {
+                // Scroll to verdict section if it exists
+                const verdictSection = document.querySelector('.verdict-section');
+                const outputSection = document.querySelector('.output-section');
+                
+                if (verdictSection) {
+                    verdictSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (outputSection) {
+                    outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
