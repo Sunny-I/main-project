@@ -3,11 +3,17 @@ import subprocess
 from sys import meta_path
 import tempfile
 import os
+
+from requests import Response
 from .forms import Code_Form
 from problem_list.models import Problem  
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from submissions.models import Submission
+import google.generativeai as genai
+genai.configure(api_key= "AIzaSyDxK_VjyVBuvNfBXhQ_Aup1Ye0v79ApR88")
+model = genai.GenerativeModel("models/gemini-2.0-flash")
+
 
 @login_required
 def run_code(request):
@@ -221,3 +227,38 @@ def submit_code(request):
         form = Code_Form()
 
     return render(request, 'problem_detail.html', {"form": form})
+
+
+def ai_review(request):
+    if request.method == "POST":
+        form = Code_Form(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data["code"]
+            slug = request.POST.get("slug")
+            problem = Problem.objects.get(slug=slug)
+            prompt = f"This is my problem desciption {problem.description} and this is my code {code} review my code and of there are any errors target them or tell me the imporvements if there are any and return and compare the time and space complexity to that of the optimal code"
+            try:
+                response = model.generate_content(prompt)
+                output = response.text
+            except Exception as e:
+                return render(request, 'problem_detail.html', {
+                'form': form,
+                'problem': problem,
+                'output' : 'Please try again',
+            })
+        
+            return render(request, 'problem_detail.html', {
+                'form': form,
+                'problem': problem,
+                'output' : output,
+            })
+        
+        return render(request, 'problem_detail.html', {
+                'form': form,
+                'problem': problem,
+                'output' : "The form is not valid",
+            })
+                
+
+
+

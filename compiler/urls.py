@@ -6,5 +6,5 @@ urlpatterns = [
     path('run/',views.run_code, name = 'run_code'),
     path('submit/',views.submit_code, name = 'submit_code'),
     path('problem/<slug:slug>/', views.problem_detail, name='problem_detail'), 
-
+    path('ai_review/',views.ai_review, name = 'ai_review'),
 ]
