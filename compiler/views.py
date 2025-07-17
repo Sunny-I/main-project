@@ -236,7 +236,7 @@ def ai_review(request):
             code = form.cleaned_data["code"]
             slug = request.POST.get("slug")
             problem = Problem.objects.get(slug=slug)
-            prompt = f"This is my problem desciption {problem.description} and this is my code {code} review my code and of there are any errors target them or tell me the imporvements if there are any and return and compare the time and space complexity to that of the optimal code"
+            prompt = f"This is my problem desciption {problem.description} and this is my code {code} review my code and of there are any errors target them or tell me the imporvements if there are any and return and compare the time and space complexity to that of the optimal code and give me the ouput in less number of lines and give me only whats required"
             try:
                 response = model.generate_content(prompt)
                 output = response.text
